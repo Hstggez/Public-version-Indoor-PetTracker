@@ -1,5 +1,10 @@
 This project is designed to be working as a pet location tracker:
 
+Note: the name being public doesn't mean you own the right to plagiarize or copy the entire codbase as your own 
+It only means the codebase is cleaned of Sensitive API keys and infos as well as data.
+
+I, Shaoting Huang, is the owner of this codebase
+
 For Device folder: the script is to be installed on WIFI enabled RaspberryPi
 For EC2server folder: it contains all the needed code to be installed on EC2
 For front end folder: it contains all the files needed for webapp working
