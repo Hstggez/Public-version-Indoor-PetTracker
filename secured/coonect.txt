@@ -1,0 +1,8 @@
+ssh -i "C:\Users\hstba\OneDrive\Desktop\proj\secured\PetTracker_EC2.pem" ec2-user@REDACTED
+
+above line is for remote connection using vscode to EC2, REPLACE the address with your pem location
+
+
+
+for shutdown server script: use this HTTP request
+curl -X POST http://localhost:8080/shutdown

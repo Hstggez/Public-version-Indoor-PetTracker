@@ -1,0 +1,88 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0; /* Optional: for better contrast */
+}
+
+#floorplan-text {
+    position: relative;
+    top: -20px; /* Moves the text 20px above its normal position */
+    font-size: 24px; /* Adjust size as needed */
+    color: black; /* Adjust color as needed */
+    margin-bottom: 0; /* Ensure no extra space below */
+}
+
+#floorplan-container {
+    position: relative;
+    width: 800px; /* Adjust as needed */
+    max-width: 90%; /* Makes it responsive */
+    margin: 0 auto; /* Centers the container */
+}
+
+#floorplan {
+    width: 100%; /* Ensures it fits within the container */
+}
+
+.dot {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Center the dot on its coordinates */
+}
+
+body {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-color 3s ease, filter 1.5s ease; /* Faster blur transition */
+}
+
+/* Pseudo-element for background blur */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1; /* Ensures it stays behind the content */
+    transition: filter 1.5s ease; /* Faster blur transition */
+    background-image: inherit; /* Use the body's background image */
+}
+
+/* Apply blur when hovering over the button */
+body.blur::before {
+    filter: blur(5px); /* Apply blur effect */
+}
+
+/* Blur text when hovering over the button */
+body.text-blur * {
+    filter: blur(2px); /* Slight blur for text */
+    transition: filter 1.5s ease; /* Smooth text blur transition */
+}
+
+#begin-button {
+    padding: 30px 60px; /* Increase padding to make the button bigger */
+    font-size: 28px; /* Larger font size */
+    font-weight: bold; /* Make the text bold */
+    cursor: pointer;
+    background-color: #f7f4e9; /* Button background color */
+    border: 2px solid #ccc;
+    border-radius: 12px; /* Slightly rounded corners */
+    transition: transform 0.2s, background-color 0.5s ease; /* Smooth transition for hover */
+}
+
+/* Button hover effect */
+#begin-button:hover {
+    transform: scale(1.1); /* Make the button bigger on hover */
+    background-color: #e0dac7; /* Change color on hover */
+}
