@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const MAX_RECONNECTION=10;
     let Summary_yes=0;
     let websocket,websocket2;
+    let connect_state=false;
     function connectToWebSocketWithRoute(){
         if (websocket2 && (websocket2.readyState === WebSocket.OPEN || websocket2.readyState === WebSocket.CONNECTING)) {
             hideAllConnectingMessages();
@@ -19,10 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
+    function ResetAllState(){
+        Summary_yes=0;
+        Reconnectiontimer=0;
+        connect_state=false;
+        hideAllConnectingMessages();
+    }
     // Function to connect to WebSocket and listen for updates
     function connectToWebSocket(route='') {
         let connection_present=0;
+        if(!connect_state){
+            ResetAllState();
+            return;
+        }
         if (websocket && (websocket.readyState === WebSocket.OPEN || websocket.readyState === WebSocket.CONNECTING)) {
             hideAllConnectingMessages();
             console.log('connection to websocket still on');
@@ -114,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderInitialPage() {
+        connect_state=false;
         Summary_yes=0;
         document.body.classList.remove('blur', 'text-blur');
         document.body.style.backgroundImage = "url('./background.jpg')";
@@ -143,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderFloorPlanPage() {
+        connect_state=true;
         Summary_yes=0;
         document.body.style.backgroundColor = '#f7f4e9';
         document.body.style.filter = 'blur(0px)';
@@ -177,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSummaryPage() {
+        connect_state=true;
         let ele=null;
         ele=showLoadingScreen(null,1,"Communicating with the server",true);
         Summary_yes=1;
