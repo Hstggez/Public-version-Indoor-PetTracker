@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const WEBSOCKET_URL = "ws://REDACTED:8765"; // Replace with your WebSocket server's URL and port
+    const WEBSOCKET_URL = "ws://3.20.4.116:8765"; // Replace with your WebSocket server's URL and port
     let Reconnectiontimer=0;
-    const MAX_RECONNECTION=10;
+    const MAX_RECONNECTION=20;
     let Summary_yes=0;
     let websocket,websocket2;
     let connect_state=false;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         if (websocket && (websocket.readyState === WebSocket.OPEN || websocket.readyState === WebSocket.CONNECTING)) {
-            hideAllConnectingMessages();
+            //hideAllConnectingMessages();
             console.log('connection to websocket still on');
             console.warn('WebSocket connection already exists. Skipping reconnection.');
             showmsg("Backend Connected: waiting for updates");
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             websocket.onopen = () => {
                 console.log('Connected to WebSocket server');
-                hideAllConnectingMessages();
+                //hideAllConnectingMessages();
                 showmsg("Backend Connected: waiting for updates");
                 if(Summary_yes){
                     websocket.send("trigger_summary");
@@ -86,23 +86,23 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             websocket.onclose = () => {
-                console.warn('WebSocket connection closed. Attempting to reconnect in 2 seconds...');
-                showmsg('WebSocket connection closed. Attempting to reconnect in 2 seconds...');
+                console.warn('WebSocket connection closed. Attempting to reconnect in 1 seconds...');
+                showmsg('WebSocket connection closed. Attempting to reconnect in 1 seconds...');
                 console.log(Reconnectiontimer);
                 setTimeout(()=>{
 
-                    if(Reconnectiontimer<MAX_RECONNECTION){
+                    if(Reconnectiontimer<MAX_RECONNECTION-1){
                         ++Reconnectiontimer;
                         showmsg('Attempting to reconnect');
 
                         connectToWebSocket();
                     }
                     else{
-                        showmsg('Reconnected 10 times, service might be temporarily unavailable');
+                        showmsg(`Had been trying to connect for ${MAX_RECONNECTION}s, service might be temporarily unavailable`);
                         Reconnectiontimer=0;
                     }
 
-                 }, 2000);
+                 }, 1000);
             };
         } catch (err) {
             console.error('Failed to connect to WebSocket:', err);
@@ -124,8 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderInitialPage() {
-        connect_state=false;
-        Summary_yes=0;
+        ResetAllState(); //force hide connection msg
         document.body.classList.remove('blur', 'text-blur');
         document.body.style.backgroundImage = "url('./background.jpg')";
         document.body.style.backgroundColor = '';
@@ -211,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         else{
-            ele=showLoadingScreen(null,1,"Server is connected, waiting for info",true);
-            document.body.removeChild(ele);
+            //ele=showLoadingScreen(null,1,"Server is connected, waiting for info",true);
+            //document.body.removeChild(ele);
             connectToWebSocket();
 
         }    
