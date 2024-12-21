@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         if (websocket && (websocket.readyState === WebSocket.OPEN || websocket.readyState === WebSocket.CONNECTING)) {
-            //hideAllConnectingMessages();
+            hideAllConnectingMessages();
             console.log('connection to websocket still on');
             console.warn('WebSocket connection already exists. Skipping reconnection.');
             showmsg("Backend Connected: waiting for updates");
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             websocket.onopen = () => {
                 console.log('Connected to WebSocket server');
-                //hideAllConnectingMessages();
+                hideAllConnectingMessages();
                 showmsg("Backend Connected: waiting for updates");
                 if(Summary_yes){
                     websocket.send("trigger_summary");
@@ -81,13 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             websocket.onerror = (err) => {
+                if(!connect_state){
+                    return;
+                }
+                else{
+                    showErrormsg(err);
+                }
                 console.error('WebSocket error:', err);
-                showErrormsg(err);
+
             };
 
             websocket.onclose = () => {
                 console.warn('WebSocket connection closed. Attempting to reconnect in 1 seconds...');
-                showmsg('WebSocket connection closed. Attempting to reconnect in 1 seconds...');
+                if(!connect_state){
+                    return;
+                }
+                else{showmsg('WebSocket connection closed. Attempting to reconnect in 1 seconds...');}
+
                 console.log(Reconnectiontimer);
                 setTimeout(()=>{
 
